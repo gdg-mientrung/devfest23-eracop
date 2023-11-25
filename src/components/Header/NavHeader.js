@@ -5,11 +5,11 @@ import Link from 'next/link'
 export default function NavHeader() {
 
   return (
-    <div className='flex justify-start px-14 gap-28 bg-[linear-gradient(-180deg,#f53d2d,#f63)]'>
+    <div className='flex justify-start px-14 gap-28 bg-[#14293A] items-center'>
       <Link href='/'>
-      <img className='h-20 w-20 object-scale-down' src="https://uploads.turbologo.com/uploads/design/hq_preview_image/1385749/draw_svg20210625-19886-xh0lc.svg.png" alt="" />
+      <img className='h-20 w-20 object-scale-down' src="https://res.cloudinary.com/dk6yblsoj/image/upload/v1700938533/eracop-high-resolution-logo-white-transparent_jxpxwa.png" alt="" />
       </Link>
-      <h1>Welcome to virtual room</h1>
+      <h1 className="text-white text-center">Welcome to virtual fitting room</h1>
     </div>
   )
 }

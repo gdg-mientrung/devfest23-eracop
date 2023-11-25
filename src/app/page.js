@@ -43,7 +43,6 @@ export default function Home() {
   const [isSuggest, setIsSuggest] = useState(false);
   const [input, setInput] = useState("");
   const [chatResult, setChatResult] = useState("");
-  const [isFittingRoomVisible, toggleIsFittingRoomVisible] = useToggle(false);
   // Use a function declaration instead of arrow function
   const fetchData = () => {
     setClothes(data);
@@ -113,9 +112,6 @@ export default function Home() {
           </Button>
         </div>
       </div>
-      <Modal title="Virtual Fitting Room" open={isFittingRoomVisible} onOk={toggleIsFittingRoomVisible} onCancel={toggleIsFittingRoomVisible}>
-        <FittingRoom/>
-      </Modal>
       <Suspense fallback={<div className="text-black">Loading...</div>}>
         {showLazy && (<LazyComponent data={data} isSuggest={isSuggest}/>)}
       </Suspense>
