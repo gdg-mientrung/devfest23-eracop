@@ -13,6 +13,7 @@ export default function FittingRoom() {
 });
   const [userImage, setUserImage] = useState(null);
   const [responseImage, setResponseImage] = useState(null);
+  const [loading, setLoading] = useState(false);
   // Load user image from localStorage
   useEffect(() => {
     const storedUserImage = localStorage.getItem('userImage');
@@ -42,13 +43,21 @@ export default function FittingRoom() {
     // }
 
     try {
-
+      setLoading(true);
       // *TO DO move this in to if response ok
       setResponseImage(userImage);
-      const responseImageElement = document.getElementById('responseImage');
-      if (responseImageElement) {
-        responseImageElement.scrollIntoView({ behavior: 'smooth' });
-      }
+
+      // *TO DO move this in to if response ok
+      setLoading(false);
+
+        setTimeout(() => {
+          const responseImageElement = document.getElementById('responseImage');
+          if (responseImageElement) {
+
+          console.log('responseImageElement:', responseImageElement);
+          responseImageElement.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 0);
       //
       // Assuming there is a Virtual Try-On API endpoint
       const response = await fetch('your_virtual_try_on_api_endpoint', {
@@ -73,6 +82,8 @@ export default function FittingRoom() {
       }
     } catch (error) {
       console.error('Error calling Virtual Try-On API:', error.message);
+    }  finally {
+      setLoading(false);
     }
   };
   const uploadButton = (
@@ -111,18 +122,25 @@ export default function FittingRoom() {
     </div>
     <div className="w-full items-center justify-center flex">
     <Button onClick={handleVirtualTryOn} className="mainButton">
-    Try on
+    {loading ? <LoadingOutlined /> : 'Try on'}
     </Button>
     </div>
    
-    <div className="mt-4 p-32" id="responseImage">
-    {responseImage && (
-      <img
-        src={responseImage}
-        alt="Preview"
-        className="w-full h-[480px] aspect-w-1 aspect-h-1 object-cover border border-gray-300"
-      />
-    )}
+    <div className="mt-4 px-32" >
+    {loading ? (
+  <div className="w-full h-[480px] aspect-w-1 aspect-h-1 flex items-center justify-center">
+    <LoadingOutlined />
+  </div>
+) : (
+  responseImage && (
+    <img
+      id="responseImage"
+      src={responseImage}
+      alt="Preview"
+      className="w-full h-[480px] aspect-w-1 aspect-h-1 object-cover border border-gray-300"
+    />
+  )
+)}
   </div>
 
 

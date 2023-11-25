@@ -3,9 +3,11 @@ import { Button } from "antd";
 import { Input } from "antd";
 import { useEffect, useState } from "react";
 import Products from "@/components/products`";
-
+import { data } from "@/data`";
+import {useToggle} from "usehooks-ts";
 export default async function Home() {
-  const [clothes, setClothes] = useState([]);
+  const [clothes, setClothes] = useState(data);
+  const [isModalVisible, setIsModalVisible] = useToggle();
   const fetchData = async () => {
     try {
       const response = await fetch("http://127.0.0.1:8000/", {
@@ -34,7 +36,7 @@ export default async function Home() {
         </div>
         <div className="flex flex-col w-4/6 text-black gap-3">
           <div className="flex gap-2">
-            : <Input className="flex-1" placeholder="Insert link heer" />
+            : <Input className="flex-1" placeholder="Insert shop link" />
           </div>
           <div className="flex gap-2">
             : <Input className="flex-1" placeholder="" />
