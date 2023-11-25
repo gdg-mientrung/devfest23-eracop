@@ -1,30 +1,46 @@
 "use client";
 import { Button } from "antd";
 import { Input } from "antd";
-import { useEffect, useState } from "react";
-import Products from "@/components/products`";
+import React, { useEffect, useState, lazy, Suspense  } from "react";
+const LazyComponent = lazy(() => import("@/components/products`"));
 
-export default async function Home() {
+const getClothes = async () => {
+  let response = await fetch("/api/get", {
+    method: "GET",
+  });
+
+  // You need to await or use .then() here
+  let data = await response.json();
+  console.log(data);
+  return data;
+};
+export default function Home() {
   const [clothes, setClothes] = useState([]);
-  const fetchData = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:8000/", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+  const [showLazy,setShowLazy] = useState(false)
+  const [isSuggest,setIsSuggest] = useState(false)
+
+  // Use a function declaration instead of arrow function
+  const fetchData = () => {
+    setClothes([]);
+    setShowLazy(false)
+    getClothes()
+      .then((data) => {
+        setClothes(data);
+        setShowLazy(true)
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
       });
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch data");
-      }
-
-      const data = await response.json();
-      setClothes(data); // Assuming the response is an array of clothing items
-    } catch (error) {
-      console.error("Error fetching data:", error.message);
-    }
   };
+  const fetchDataSuggest = () =>{
+    setShowLazy(false)
+    setIsSuggest(false)
+    //api
+    setShowLazy(true)
+    setIsSuggest(true)
+
+  }
+
   return (
     <main className="flex min-h-screen bg-slate-50 flex-col items-center justify-between p-24">
       <div className=" w-full flex gap-3 items-center">
@@ -44,16 +60,14 @@ export default async function Home() {
           <Button onClick={fetchData} type="primary" className="bg-red-200">
             Get product
           </Button>
-          <Button type="primary" className="bg-red-200">
+          <Button onClick={fetchDataSuggest} type="primary" className="bg-red-200">
             Suggest
           </Button>
         </div>
       </div>
-      <div className="grid grid-cols-5 gap-4">
-        { clothes.length && clothes.map((curr) => (
-          <Products />
-        ))}
-      </div>
+      <Suspense fallback={<div className="text-black">Loading...</div>}>
+        {showLazy && (<LazyComponent data={clothes} isSuggest={isSuggest}/>)}
+      </Suspense>
     </main>
   );
 }
