@@ -3,14 +3,9 @@ import { Button, Typography, Upload } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { UploadOutlined } from '@ant-design/icons';
-export default function FittingRoom() {
+export default function FittingRoom({selectedProduct}) {
   const { Title } = Typography;
-  const [selectedProduct, setSelectedProduct] = useState({
-    "STT": "8",
-    "Name": "Essential T-Shirt Shirt - Burgundy Cotton Jersey",
-    "url": "https://www.batchmens.com/cdn/shop/products/Essential-LS-Shirt-Burgundy-Jersey_83848ab7-ff35-4ffe-a4d3-f3c9f529f5db_720x.jpg?v=1673644516",
-    "Category": "casual"
-});
+  console.log({selectedProduct});
   const [userImage, setUserImage] = useState(null);
   const [responseImage, setResponseImage] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -45,7 +40,7 @@ export default function FittingRoom() {
     try {
       setLoading(true);
       // *TO DO move this in to if response ok
-      setResponseImage(userImage);
+      setResponseImage("https://res.cloudinary.com/dk6yblsoj/image/upload/v1700929663/final_oynyox.jpg");
 
       // *TO DO move this in to if response ok
       setLoading(false);
@@ -102,10 +97,10 @@ export default function FittingRoom() {
       {/* Display user's image */}
       <div className="flex">
       {/* User image section */}
-      <div className="w-1/2 p-4 text-center">
+      <div className="w-1/2 p-4 text-center flex flex-col justify-center items-center">
         <Title level={2} className="mb-2">User image:</Title>
-        {userImage && <img src={userImage} alt="Preview" className="w-full h-[480px] aspect-w-1 aspect-h-1 object-fit border border-gray-300" />}
-        <div className="mt-2 w-full items-center justify-center flex flex-col">
+        {userImage && <img src={userImage} alt="Preview" className="w-[480px] h-[480px] aspect-w-1 aspect-h-1 object-fit border border-gray-300" />}
+        <div className="mt-2 w-[480px] items-center justify-center flex flex-col">
           <h2>Upload your image:</h2>
           <Upload type="file"  showUploadList={false} name= 'file' accept="image/*" beforeUpload={handleImageUpload}>
               <Button className="border-1 border-zinc-900 border-solid" icon={<UploadOutlined />}>Click to Upload</Button>
@@ -115,20 +110,20 @@ export default function FittingRoom() {
       </div>
 
       {/* Selected product image section */}
-      <div className="w-1/2 py-1 px-4 text-center">
+      <div className="w-1/2 p-4 text-center flex flex-col items-center">
       <Title level={2} className="mb-2">Product image:</Title>
-        {selectedProduct && <img src={selectedProduct.url} alt="Preview"   className="w-full h-[480px] aspect-w-1 aspect-h-1 object-fit border border-gray-300" />}
+        {selectedProduct && <img src={selectedProduct.url} alt="Preview"   className="w-[480px] h-[480px] aspect-w-1 aspect-h-1 object-fit border border-gray-300" />}
       </div>
     </div>
-    <div className="w-full items-center justify-center flex">
+    <div className="w-[full items-center justify-center flex">
     <Button onClick={handleVirtualTryOn} className="mainButton">
     {loading ? <LoadingOutlined /> : 'Try on'}
     </Button>
     </div>
    
-    <div className="mt-4 px-32" >
+    <div className="mt-4 pt-32 w-full flex items-center justify-center" >
     {loading ? (
-  <div className="w-full h-[480px] aspect-w-1 aspect-h-1 flex items-center justify-center">
+  <div className="w-[480px] h-[480px] aspect-w-1 aspect-h-1 flex items-center justify-center">
     <LoadingOutlined />
   </div>
 ) : (
@@ -137,7 +132,7 @@ export default function FittingRoom() {
       id="responseImage"
       src={responseImage}
       alt="Preview"
-      className="w-full h-[480px] aspect-w-1 aspect-h-1 object-cover border border-gray-300"
+      className="w-[480px] h-[480px] aspect-w-1 aspect-h-1 object-scale-down border border-gray-300"
     />
   )
 )}
