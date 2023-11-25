@@ -1,12 +1,10 @@
-'use client'
-import { Inter } from 'next/font/google'
-import './globals.css'
-import Header from '@/components/Header`'
-import StyledComponentsRegistry from '@/lib/AntdRegistry`'
+"use client";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import Header from "@/components/Header`";
+import StyledComponentsRegistry from "@/lib/AntdRegistry`";
 
-const inter = Inter({ subsets: ['latin'] })
-
-
+const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({ children }) {
   return (
@@ -14,5 +12,5 @@ export default function RootLayout({ children }) {
       <Header />
       <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
     </html>
-  )
+  );
 }

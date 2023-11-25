@@ -1,9 +1,10 @@
 import Image from "next/image";
 import { Input } from "antd";
+import Search from "@/components/Search`";
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div>
+    <main className="flex min-h-screen bg-slate-50 flex-col items-center justify-between p-24">
+      {/* <div>
         <div className="mt-4 grid grid-cols-12 items-ends gap-4 px-5">
           <p className="text-lg font-medium">Link</p>
           <form className="col-span-12">
@@ -17,7 +18,8 @@ export default function Home() {
             <button>abc</button>
           </form>
         </div>
-      </div>
+      </div> */}
+      <Search/>
     </main>
   );
 }
