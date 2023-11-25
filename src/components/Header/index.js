@@ -11,10 +11,6 @@ export default function Header() {
   // Nên các query này sẽ không bị inactive => Không bị gọi lại => không cần thiết phải set stale: Infinity
 
   return (
-    <div className="bg-slate-400 text-white">
-      <div className="container">
         <NavHeader />
-      </div>
-    </div>
   );
 }

@@ -1,9 +1,10 @@
 'use client'
-import { Button, Upload } from 'antd';
+import { Button, Typography, Upload } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { data } from '@/data`';
+import { UploadOutlined } from '@ant-design/icons';
 export default function FittingRoom() {
+  const { Title } = Typography;
   const [selectedProduct, setSelectedProduct] = useState({
     "STT": "8",
     "Name": "Essential T-Shirt Shirt - Burgundy Cotton Jersey",
@@ -21,15 +22,12 @@ export default function FittingRoom() {
   }, []);
 
   const handleImageUpload = (event) => {
-    console.log("Input event:", event.target.value);  // Log information about the input element
-    const uploadedImage = event.target.files[0];
+    console.log("Input event:", event);  // Log information about the input element
+    const uploadedImage = event;
     const reader = new FileReader();
   
     reader.onload = () => {
       // This will be executed when the file is successfully loaded
-      console.log("userImage", reader.result);
-      alert("Ok");
-  
       setUserImage(reader.result);
       localStorage.setItem('userImage', reader.result);
     };
@@ -44,7 +42,14 @@ export default function FittingRoom() {
     // }
 
     try {
+
+      // *TO DO move this in to if response ok
       setResponseImage(userImage);
+      const responseImageElement = document.getElementById('responseImage');
+      if (responseImageElement) {
+        responseImageElement.scrollIntoView({ behavior: 'smooth' });
+      }
+      //
       // Assuming there is a Virtual Try-On API endpoint
       const response = await fetch('your_virtual_try_on_api_endpoint', {
         method: 'POST',
@@ -60,6 +65,7 @@ export default function FittingRoom() {
 
       if (response.ok) {
         const result = await response.json();
+    
         // Handle the result, which may include the image of the user wearing the selected product
         console.log('Virtual Try-On result:', result);
       } else {
@@ -81,23 +87,45 @@ export default function FittingRoom() {
     </div>
   );
   return (
-    <div>
+    <div className="px-10 py-10">
       {/* Display user's image */}
-      <h2>Product image:</h2>
-      {userImage && <img src={userImage} alt="Preview" style={{ maxWidth: '400px' }} />}
-      
-      {/* Image upload input */}
-      <div>
-        <h2>Upload your image:</h2>
-        <input type="file" accept="image/*" onChange={handleImageUpload} />
+      <div className="flex">
+      {/* User image section */}
+      <div className="w-1/2 p-4 text-center">
+        <Title level={2} className="mb-2">User image:</Title>
+        {userImage && <img src={userImage} alt="Preview" className="w-full h-[480px] aspect-w-1 aspect-h-1 object-fit border border-gray-300" />}
+        <div className="mt-2 w-full items-center justify-center flex flex-col">
+          <h2>Upload your image:</h2>
+          <Upload type="file"  showUploadList={false} name= 'file' accept="image/*" beforeUpload={handleImageUpload}>
+              <Button className="border-1 border-zinc-900 border-solid" icon={<UploadOutlined />}>Click to Upload</Button>
+             
+            </Upload>
+        </div>
       </div>
-      
-      <div>
-      {selectedProduct && <img src={selectedProduct.url} alt="Preview" style={{ maxWidth: '400px' }} />}
-      </div>
-      <Button onClick={handleVirtualTryOn} className="MainButton">Try on</Button>
 
-      {responseImage && <img src={responseImage } alt="Preview" style={{ maxWidth: '400px' }} />}
+      {/* Selected product image section */}
+      <div className="w-1/2 py-1 px-4 text-center">
+      <Title level={2} className="mb-2">Product image:</Title>
+        {selectedProduct && <img src={selectedProduct.url} alt="Preview"   className="w-full h-[480px] aspect-w-1 aspect-h-1 object-fit border border-gray-300" />}
+      </div>
+    </div>
+    <div className="w-full items-center justify-center flex">
+    <Button onClick={handleVirtualTryOn} className="mainButton">
+    Try on
+    </Button>
+    </div>
+   
+    <div className="mt-4 p-32" id="responseImage">
+    {responseImage && (
+      <img
+        src={responseImage}
+        alt="Preview"
+        className="w-full h-[480px] aspect-w-1 aspect-h-1 object-cover border border-gray-300"
+      />
+    )}
+  </div>
+
+
     
     </div>
   );
